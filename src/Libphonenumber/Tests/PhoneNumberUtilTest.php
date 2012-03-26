@@ -1,6 +1,6 @@
 <?php
 
-namespace com\google\i18n\phonenumbers;
+namespace Libphonenumber;
 
 require_once dirname(__FILE__) . '/../PhoneNumberUtil.php';
 require_once dirname(__FILE__) . '/../RegionCode.php';

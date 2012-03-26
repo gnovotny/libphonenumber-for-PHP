@@ -1,6 +1,6 @@
 <?php
 
-namespace com\google\i18n\phonenumbers;
+namespace Libphonenumber;
 
 require_once dirname(__FILE__) . '/CountryCodeToRegionCodeMap.php';
 require_once dirname(__FILE__) . '/PhoneMetadata.php';
