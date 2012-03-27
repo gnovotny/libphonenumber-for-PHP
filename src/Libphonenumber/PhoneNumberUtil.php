@@ -2,86 +2,6 @@
 
 namespace Libphonenumber;
 
-require_once dirname(__FILE__) . '/CountryCodeToRegionCodeMap.php';
-require_once dirname(__FILE__) . '/PhoneMetadata.php';
-
-/**
- * INTERNATIONAL and NATIONAL formats are consistent with the definition in ITU-T Recommendation
- * E123. For example, the number of the Google Switzerland office will be written as
- * "+41 44 668 1800" in INTERNATIONAL format, and as "044 668 1800" in NATIONAL format.
- * E164 format is as per INTERNATIONAL format but with no formatting applied, e.g. +41446681800.
- * RFC3966 is as per INTERNATIONAL format, but with all spaces and other separating symbols
- * replaced with a hyphen, and with any phone number extension appended with ";ext=".
- *
- * Note: If you are considering storing the number in a neutral format, you are highly advised to
- * use the PhoneNumber class.
- */
-class PhoneNumberFormat {
-
-	const E164 = 0;
-	const INTERNATIONAL = 1;
-	const NATIONAL = 2;
-	const RFC3966 = 3;
-
-}
-
-/**
- * Type of phone numbers.
- */
-class PhoneNumberType {
-
-	const FIXED_LINE = 0;
-	const MOBILE = 1;
-	// In some regions (e.g. the USA), it is impossible to distinguish between fixed-line and
-	// mobile numbers by looking at the phone number itself.
-	const FIXED_LINE_OR_MOBILE = 2;
-	// Freephone lines
-	const TOLL_FREE = 3;
-	const PREMIUM_RATE = 4;
-	// The cost of this call is shared between the caller and the recipient, and is hence typically
-	// less than PREMIUM_RATE calls. See // http://en.wikipedia.org/wiki/Shared_Cost_Service for
-	// more information.
-	const SHARED_COST = 5;
-	// Voice over IP numbers. This includes TSoIP (Telephony Service over IP).
-	const VOIP = 6;
-	// A personal number is associated with a particular person, and may be routed to either a
-	// MOBILE or FIXED_LINE number. Some more information can be found here:
-	// http://en.wikipedia.org/wiki/Personal_Numbers
-	const PERSONAL_NUMBER = 7;
-	const PAGER = 8;
-	// Used for "Universal Access Numbers" or "Company Numbers". They may be further routed to
-	// specific offices, but allow one number to be used for a company.
-	const UAN = 9;
-	// A phone number is of type UNKNOWN when it does not fit any of the known patterns for a
-	// specific region.
-	const UNKNOWN = 10;
-
-}
-
-/**
- * Types of phone number matches. See detailed description beside the isNumberMatch() method.
- */
-class MatchType {
-
-	const NOT_A_NUMBER = 0;
-	const NO_MATCH = 1;
-	const SHORT_NSN_MATCH = 2;
-	const NSN_MATCH = 3;
-	const EXACT_MATCH = 4;
-
-}
-
-/**
- * Possible outcomes when testing if a PhoneNumber is possible.
- */
-class ValidationResult {
-
-	const IS_POSSIBLE = 0;
-	const INVALID_COUNTRY_CODE = 1;
-	const TOO_SHORT = 2;
-	const TOO_LONG = 3;
-
-}
 
 /**
  * Utility for international phone numbers. Functionality includes formatting, parsing and
@@ -180,7 +100,7 @@ class PhoneNumberUtil {
 	private function init($filePrefix) {
 		$this->currentFilePrefix = dirname(__FILE__) . '/data/' . $filePrefix;
 		foreach ($this->countryCallingCodeToRegionCodeMap as $regionCodes) {
-			$this->supportedRegions = array_merge($this->supportedRegions, $regionCodes);
+			$this->supportedRegions = array_merge($this->supportedRegions, array_combine($regionCodes, $regionCodes));
 		}
 		unset($this->supportedRegions[array_search(self::REGION_CODE_FOR_NON_GEO_ENTITY, $this->supportedRegions)]);
 		//nanpaRegions.addAll(countryCallingCodeToRegionCodeMap.get(NANPA_COUNTRY_CODE));
