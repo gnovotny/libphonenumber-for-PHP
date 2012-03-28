@@ -8,6 +8,17 @@ class PhoneNumber {
 	 * @var int
 	 */
 	private $countryCode = NULL;
+    
+    public function __toString()
+    {
+        return PhoneNumberUtil::getInstance()->format($this, PhoneNumberFormat::INTERNATIONAL);
+    }
+    
+    public function format($format = null)
+    {
+        $format = $format ?: PhoneNumberFormat::INTERNATIONAL;
+        return PhoneNumberUtil::getInstance()->format($this, $format);
+    }
 
 	public function hasCountryCode() {
 		return isset($this->countryCode);
